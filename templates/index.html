@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FindHouse — Boarding House (Kos) Finder & Booking App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">🏠 Find<span>House</span></a>
+            <nav class="nav-links">
+                <a href="#find-kos">Find a Kos</a>
+                <a href="#features">Why FindHouse</a>
+                <a href="/dashboard">Owner Dashboard</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="btn btn-outline" onclick="openAuthModal('login')">Log In</button>
+                <button class="btn btn-primary" onclick="openAuthModal('register')">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <span class="badge">#1 Boarding House Finder & Booking Platform</span>
+                <h1>Find Your Ideal Boarding House Without the Hassle</h1>
+                <p>
+                    Compare prices, check complete facilities, read verified tenant reviews, and book your room online
+                    in one single app.
+                </p>
+                <div class="hero-stats">
+                    <div><strong>500+</strong><span>Verified Properties</span></div>
+                    <div><strong>100%</strong><span>Real-Time Availability</span></div>
+                    <div><strong>Instant</strong><span>Online Booking</span></div>
+                </div>
+            </div>
+
+            <!-- SEARCH & FILTER BOX -->
+            <div class="search-card" id="find-kos">
+                <h3>Find Your Next Room</h3>
+                <form id="filterForm">
+                    <div class="form-group">
+                        <label for="searchKeyword">Location or Property Name</label>
+                        <input type="text" id="searchKeyword" placeholder="e.g., Panam, Marpoyan, Gobah..." />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="filterType">Kos Type</label>
+                            <select id="filterType">
+                                <option value="all">All Types</option>
+                                <option value="Male">Male Only</option>
+                                <option value="Female">Female Only</option>
+                                <option value="Mixed">Mixed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterPrice">Max Monthly Price</label>
+                            <select id="filterPrice">
+                                <option value="99999999">Any Price</option>
+                                <option value="800000">≤ IDR 800,000</option>
+                                <option value="1200000">≤ IDR 1,200,000</option>
+                                <option value="2000000">≤ IDR 2,000,000</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">🔍 Search Rooms Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- KOS LIST SECTION -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2>Featured Boarding Houses</h2>
+                    <p id="resultCount">Showing all available properties</p>
+                </div>
+                <button class="btn btn-outline" id="toggleFavBtn" onclick="toggleFavoritesOnly()">
+                    ❤️ Saved Favorites (<span id="favCount">0</span>)
+                </button>
+            </div>
+            <div id="kosGrid" class="kos-grid"></div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="section bg-light" id="features">
+        <div class="container">
+            <div class="section-header center">
+                <h2>Why Choose FindHouse?</h2>
+                <p>Built for students, young professionals, and boarding house owners.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="icon">🔎</div>
+                    <h3>Smart Search & Filters</h3>
+                    <p>Filter properties by location, budget, and room type (Male, Female, Mixed) with up-to-date
+                        listings.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📅</div>
+                    <h3>Seamless Online Booking</h3>
+                    <p>Request a room directly from the property page and receive fast confirmation from the owner.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⭐</div>
+                    <h3>Verified Tenant Reviews</h3>
+                    <p>Read honest ratings and feedback from previous tenants before making your decision.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OWNER CTA SECTION -->
+    <section class="section" id="owners">
+        <div class="container">
+            <div class="owner-banner">
+                <div>
+                    <h2>Own a Boarding House? Manage It Effortlessly!</h2>
+                    <p>List your property, update room prices and availability, and accept or reject booking requests in
+                        one Owner Dashboard.</p>
+                </div>
+                <a href="/dashboard" class="btn btn-white" style="text-decoration:none;">Open Owner Dashboard</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <h4>🏠 FindHouse</h4>
+                <p>Boarding House (Kos) Finder & Booking App.</p>
+            </div>
+            <p class="copyright">© 2026 FindHouse Team (Zahra, Raffi, Esra, Liza, Mutiara). All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL: PROPERTY DETAILS, REVIEWS & BOOKING -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('detailModal')">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- MODAL: REGISTER / LOGIN -->
+    <div id="authModal" class="modal">
+        <div class="modal-content modal-sm">
+            <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
+            <h3 id="authTitle">Log In to FindHouse</h3>
+            <form id="authForm">
+                <div class="form-group">
+                    <label>Account Role</label>
+                    <select id="authRole">
+                        <option value="tenant">Tenant (Student / Worker)</option>
+                        <option value="owner">Kos Owner</option>
+                    </select>
+                </div>
+                <div class="form-group" id="nameField" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Enter your full name" />
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="authEmail" required placeholder="name@email.com" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="authSubmitBtn">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
