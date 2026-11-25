@@ -12,19 +12,18 @@
 
 <body class="bg-light">
 
-    <!-- NAVBAR -->
     <header class="navbar">
         <div class="container nav-content">
-            <a href="/" class="logo">🏠 Find<span>House</span> <small style="font-size:0.75rem; color:#64748b;">Owner
-                    Portal</small></a>
+            <a href="{{ url_for('main.home') }}" class="logo">🏠 Find<span>House</span> <small
+                    style="font-size:0.75rem; color:#64748b;">Owner Portal</small></a>
             <div class="nav-actions">
-                <a href="/" class="btn btn-outline" style="text-decoration:none;">← Back to Tenant View</a>
+                <a href="{{ url_for('main.home') }}" class="btn btn-outline" style="text-decoration:none;">← Back to
+                    Tenant View</a>
             </div>
         </div>
     </header>
 
     <main class="container" style="padding: 40px 20px;">
-        <!-- STATS -->
         <div class="features-grid" style="margin-bottom: 32px;">
             <div class="feature-card">
                 <p style="color:#64748b; font-size:0.85rem;">Total Listed Properties</p>
@@ -41,7 +40,6 @@
         </div>
 
         <div class="hero-grid" style="align-items: start;">
-            <!-- LEFT: MANAGE KOS & ADD NEW KOS -->
             <div>
                 <div class="search-card" style="margin-bottom: 24px;">
                     <h3>+ Register New Boarding House</h3>
@@ -84,7 +82,6 @@
                 </div>
             </div>
 
-            <!-- RIGHT: INCOMING BOOKING REQUESTS & HISTORY -->
             <div class="search-card">
                 <h3>Booking Requests & History</h3>
                 <p style="font-size:0.85rem; color:#64748b; margin-bottom:16px;">Accept or reject incoming tenant room

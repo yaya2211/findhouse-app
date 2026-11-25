@@ -10,14 +10,12 @@ let bookings = [
 ];
 
 function renderDashboard() {
-    // Update Stats
     document.getElementById("statTotalKos").textContent = ownerProperties.length;
     const totalRooms = ownerProperties.reduce((sum, item) => sum + item.rooms, 0);
     document.getElementById("statAvailableRooms").textContent = totalRooms;
     const pendingCount = bookings.filter((b) => b.status === "Pending").length;
     document.getElementById("statPendingBookings").textContent = pendingCount;
 
-    // Render Properties
     const propList = document.getElementById("ownerKosList");
     propList.innerHTML = "";
     ownerProperties.forEach((prop) => {
@@ -36,7 +34,6 @@ function renderDashboard() {
     `;
     });
 
-    // Render Bookings
     const bookList = document.getElementById("bookingList");
     bookList.innerHTML = "";
     bookings.forEach((b) => {

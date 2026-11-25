@@ -85,6 +85,7 @@ body {
     cursor: pointer;
     border: none;
     transition: 0.2s;
+    display: inline-block;
 }
 
 .btn-primary {
@@ -129,6 +130,7 @@ body {
 .btn-block {
     width: 100%;
     padding: 12px;
+    text-align: center;
 }
 
 .hero {
@@ -388,45 +390,6 @@ textarea:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: #fff;
-    border-radius: var(--radius);
-    max-width: 580px;
-    width: 100%;
-    padding: 28px;
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modal-sm {
-    max-width: 420px;
-}
-
-.close-btn {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--muted);
 }
 
 .list-item-box {

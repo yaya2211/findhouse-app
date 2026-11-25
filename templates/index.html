@@ -12,32 +12,29 @@
 
 <body>
 
-    <!-- NAVBAR -->
     <header class="navbar">
         <div class="container nav-content">
-            <a href="/" class="logo">🏠 Find<span>House</span></a>
+            <a href="{{ url_for('main.home') }}" class="logo">🏠 Find<span>House</span></a>
             <nav class="nav-links">
                 <a href="#find-kos">Find a Kos</a>
                 <a href="#features">Why FindHouse</a>
-                <a href="/dashboard">Owner Dashboard</a>
+                <a href="{{ url_for('owner.dashboard') }}">Owner Dashboard</a>
             </nav>
             <div class="nav-actions">
-                <button class="btn btn-outline" onclick="openAuthModal('login')">Log In</button>
-                <button class="btn btn-primary" onclick="openAuthModal('register')">Sign Up</button>
+                <a href="{{ url_for('main.login') }}" class="btn btn-outline" style="text-decoration:none;">Log In</a>
+                <a href="{{ url_for('main.register') }}" class="btn btn-primary" style="text-decoration:none;">Sign
+                    Up</a>
             </div>
         </div>
     </header>
 
-    <!-- HERO SECTION -->
     <section class="hero">
         <div class="container hero-grid">
             <div class="hero-text">
                 <span class="badge">#1 Boarding House Finder & Booking Platform</span>
                 <h1>Find Your Ideal Boarding House Without the Hassle</h1>
-                <p>
-                    Compare prices, check complete facilities, read verified tenant reviews, and book your room online
-                    in one single app.
-                </p>
+                <p>Compare prices, check complete facilities, read verified tenant reviews, and book your room online in
+                    one single app.</p>
                 <div class="hero-stats">
                     <div><strong>500+</strong><span>Verified Properties</span></div>
                     <div><strong>100%</strong><span>Real-Time Availability</span></div>
@@ -45,7 +42,6 @@
                 </div>
             </div>
 
-            <!-- SEARCH & FILTER BOX -->
             <div class="search-card" id="find-kos">
                 <h3>Find Your Next Room</h3>
                 <form id="filterForm">
@@ -79,23 +75,45 @@
         </div>
     </section>
 
-    <!-- KOS LIST SECTION -->
     <section class="section">
         <div class="container">
             <div class="section-header">
                 <div>
                     <h2>Featured Boarding Houses</h2>
-                    <p id="resultCount">Showing all available properties</p>
+                    <p id="resultCount">Showing {{ kos_list|length }} available properties</p>
                 </div>
                 <button class="btn btn-outline" id="toggleFavBtn" onclick="toggleFavoritesOnly()">
                     ❤️ Saved Favorites (<span id="favCount">0</span>)
                 </button>
             </div>
-            <div id="kosGrid" class="kos-grid"></div>
+
+            <div id="kosGrid" class="kos-grid">
+                {% for kos in kos_list %}
+                <div class="kos-card" data-id="{{ kos.id }}" data-name="{{ kos.name|lower }}"
+                    data-location="{{ kos.location|lower }}" data-type="{{ kos.type }}" data-price="{{ kos.price }}">
+                    <img src="{{ kos.image }}" alt="{{ kos.name }}" class="kos-img" />
+                    <div class="kos-body">
+                        <div class="kos-tags">
+                            <span class="tag-type">{{ kos.type }} Kos</span>
+                            <button class="fav-btn" onclick="toggleFavorite({{ kos.id }}, this)"
+                                title="Save to Favorites">🤍</button>
+                        </div>
+                        <h3 class="kos-title">{{ kos.name }}</h3>
+                        <p class="kos-loc">📍 {{ kos.location }} • ⭐ {{ kos.rating }} ({{ kos.reviews|length }} reviews)
+                        </p>
+                        <p class="kos-facilities">{{ kos.facilities[:3]|join(' • ') }}</p>
+                        <div class="kos-footer">
+                            <div class="kos-price">IDR {{ "{:,}".format(kos.price) }}<span>/mo</span></div>
+                            <a href="{{ url_for('main.kos_detail', kos_id=kos.id) }}" class="btn btn-primary"
+                                style="text-decoration:none;">Details & Book</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </section>
 
-    <!-- FEATURES SECTION -->
     <section class="section bg-light" id="features">
         <div class="container">
             <div class="section-header center">
@@ -123,7 +141,6 @@
         </div>
     </section>
 
-    <!-- OWNER CTA SECTION -->
     <section class="section" id="owners">
         <div class="container">
             <div class="owner-banner">
@@ -132,12 +149,12 @@
                     <p>List your property, update room prices and availability, and accept or reject booking requests in
                         one Owner Dashboard.</p>
                 </div>
-                <a href="/dashboard" class="btn btn-white" style="text-decoration:none;">Open Owner Dashboard</a>
+                <a href="{{ url_for('owner.dashboard') }}" class="btn btn-white" style="text-decoration:none;">Open
+                    Owner Dashboard</a>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
         <div class="container footer-content">
             <div>
@@ -147,44 +164,6 @@
             <p class="copyright">© 2026 FindHouse Team (Zahra, Raffi, Esra, Liza, Mutiara). All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- MODAL: PROPERTY DETAILS, REVIEWS & BOOKING -->
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal('detailModal')">&times;</span>
-            <div id="modalBody"></div>
-        </div>
-    </div>
-
-    <!-- MODAL: REGISTER / LOGIN -->
-    <div id="authModal" class="modal">
-        <div class="modal-content modal-sm">
-            <span class="close-btn" onclick="closeModal('authModal')">&times;</span>
-            <h3 id="authTitle">Log In to FindHouse</h3>
-            <form id="authForm">
-                <div class="form-group">
-                    <label>Account Role</label>
-                    <select id="authRole">
-                        <option value="tenant">Tenant (Student / Worker)</option>
-                        <option value="owner">Kos Owner</option>
-                    </select>
-                </div>
-                <div class="form-group" id="nameField" style="display: none;">
-                    <label>Full Name</label>
-                    <input type="text" id="authName" placeholder="Enter your full name" />
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="authEmail" required placeholder="name@email.com" />
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="authPassword" required placeholder="••••••••" />
-                </div>
-                <button type="submit" class="btn btn-primary btn-block" id="authSubmitBtn">Log In</button>
-            </form>
-        </div>
-    </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

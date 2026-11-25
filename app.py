@@ -1,10 +1,12 @@
-from flask import Flask, render_template
+from flask import Flask
+from routes.main_routes import main_bp
+from routes.owner_routes import owner_bp
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return render_template("index.html")
+# Register Routers (Blueprints)
+app.register_blueprint(main_bp)
+app.register_blueprint(owner_bp)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
